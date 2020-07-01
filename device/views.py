@@ -136,13 +136,13 @@ class PeriodTemperature(APIView):
                 result = TemperatureReadings.objects.filter(ends_at=[start_time, end_on]).values()
 
         if parameter == "Humidity":
-            tempobj = TemperatureReadings.objects.filter(device_id=id).first()
+            tempobj = HumidityReadings.objects.filter(device_id=id).first()
             if tempobj.starts_at > end_on:
                 return Response({"message": "No readings between this time period"}, HTTP_404_NOT_FOUND)
             if start_on <= tempobj.starts_at:
-                result = TemperatureReadings.objects.filter(ends_at=[tempobj.ends_at, end_on]).values()
+                result = HumidityReadings.objects.filter(ends_at=[tempobj.ends_at, end_on]).values()
             if start_on > tempobj.starts_at:
                 start_time = start_on + datetime.timedelta(seconds=10)
-                result = TemperatureReadings.objects.filter(ends_at=[start_time, end_on]).values()
+                result = HumidityReadings.objects.filter(ends_at=[start_time, end_on]).values()
         return Response({"Result": result}, HTTP_200_OK)
 
